@@ -1,0 +1,14 @@
+[
+  {
+    "name": "John",
+    "job": "Quality Assurance"
+  },
+  {
+    "name": "Mark",
+    "job": "Programmer"
+  },
+  {
+    "name": "Robert",
+    "job": "Product Owner"
+  }
+]

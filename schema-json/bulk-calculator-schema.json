@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "status": {
+      "type": "integer"
+    },
+    "info": {
+      "type": "string"
+    },
+    "content": {
+      "type": "object",
+      "properties": {
+        "orderData": {
+          "type": "array",
+          "items": [
+            {
+              "type": "object",
+              "properties": {
+                "cmdmCode": {
+                  "type": "string"
+                },
+                "clientCode": {
+                  "type": "string"
+                },
+                "branchCode": {
+                  "type": "string"
+                },
+                "productCode": {
+                  "type": "string"
+                },
+                "additionalInfo": {
+                  "type": "object",
+                  "properties": {
+                    "kurir": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "kurir"
+                  ]
+                },
+                "prices": {
+                  "type": "integer"
+                },
+                "errStatus": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "cmdmCode",
+                "clientCode",
+                "branchCode",
+                "productCode",
+                "additionalInfo",
+                "prices"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "orderData"
+      ]
+    }
+  },
+  "required": [
+    "status",
+    "info",
+    "content"
+  ]
+}
