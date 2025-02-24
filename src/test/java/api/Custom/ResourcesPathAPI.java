@@ -1,7 +1,8 @@
 package api.Custom;
 
 public enum ResourcesPathAPI {
-    CreateUsers("/api/users");
+    CreateUsers("/api/users"),
+    Login("/api/login");
 
     private final String path;
 
