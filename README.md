@@ -16,6 +16,28 @@ This Project API Automation Testing Using Rest Assured, TestNG and Extent Report
 mvn install -DskipTests=true
 ```
 
+## API Key Configuration
+This project uses an `x-api-key` header for API authentication. Ensure you include this header in each request.
+
+## API Rate Limiting
+There is a limit of 100 API requests per day per API key.
+This limitation is due to the restrictions applied to the x-api-key header.
+
+If the limit is exceeded, the server will respond with:
+```
+HTTP 429 - Too Many Requests
+```
+
+## API Key Location
+The API key is stored in a properties file located at:
+```
+src/test/resources/api.properties
+```
+Example content:
+```
+apiKey=your_api_key_here
+```
+
 ## Running Test with Default Value file TestNG XML
 
 This command will run TestNG xml file located in `testng-suites/test-api.xml`
