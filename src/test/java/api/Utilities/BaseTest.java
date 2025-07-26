@@ -24,6 +24,7 @@ import java.util.Properties;
 
 public class BaseTest {
     protected static String BASE_URL;
+    protected static String X_API_KEY;
     protected final String ROOT_PATH = new File(System.getProperty("user.dir")).getAbsolutePath();
     protected final String ROOT_PATH_SCHEMA_JSON = ROOT_PATH + "/schema-json/";
     protected final String ROOT_PATH_DATASET = ROOT_PATH + "/dataset/";
@@ -45,6 +46,7 @@ public class BaseTest {
         appProps.load(new FileInputStream(absolutePath));
 
         BASE_URL = appProps.getProperty("baseUrl");
+        X_API_KEY = appProps.getProperty("apiKey");
     }
 
     public RequestSpecification getSpecRequest() {
@@ -53,6 +55,7 @@ public class BaseTest {
         requestSpecBuilder.setContentType(ContentType.JSON);
         requestSpecBuilder.setAccept(ContentType.JSON);
         requestSpecBuilder.setConfig(getDefaultConfig());
+        requestSpecBuilder.addHeader("x-api-key", X_API_KEY);
 
         return requestSpecBuilder.build();
     }
