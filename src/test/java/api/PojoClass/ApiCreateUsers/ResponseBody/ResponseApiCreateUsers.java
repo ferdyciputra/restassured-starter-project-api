@@ -1,7 +1,10 @@
 package api.PojoClass.ApiCreateUsers.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseApiCreateUsers {
     public String name;
     public String job;

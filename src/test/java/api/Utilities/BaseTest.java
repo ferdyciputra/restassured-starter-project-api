@@ -1,8 +1,14 @@
 package api.Utilities;
 
+import api.Custom.CustomTableRequestResponse;
+import api.Custom.ResourcesPathAPI;
+import api.PojoClass.ApiLogin.RequestBody.RequestApiLogin;
+import api.PojoClass.ApiLogin.ResponseBody.ResponseApiLogin;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.CodeLanguage;
 import com.aventstack.extentreports.markuputils.Markup;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.restassured.builder.RequestSpecBuilder;
@@ -11,6 +17,8 @@ import io.restassured.config.HttpClientConfig;
 import io.restassured.config.LogConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.testng.annotations.BeforeTest;
@@ -21,6 +29,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
+
+import static io.restassured.RestAssured.given;
 
 public class BaseTest {
     protected static String BASE_URL;
@@ -56,6 +66,17 @@ public class BaseTest {
         requestSpecBuilder.setAccept(ContentType.JSON);
         requestSpecBuilder.setConfig(getDefaultConfig());
         requestSpecBuilder.addHeader("x-api-key", X_API_KEY);
+
+        return requestSpecBuilder.build();
+    }
+
+    public RequestSpecification getSpecRequest(String token) {
+        RequestSpecBuilder requestSpecBuilder = new RequestSpecBuilder();
+        requestSpecBuilder.setBaseUri(BASE_URL);
+        requestSpecBuilder.setContentType(ContentType.JSON);
+        requestSpecBuilder.setAccept(ContentType.JSON);
+        requestSpecBuilder.setConfig(getDefaultConfig());
+        requestSpecBuilder.addHeader("Authorization", "Bearer " + token);
 
         return requestSpecBuilder.build();
     }
@@ -145,5 +166,31 @@ public class BaseTest {
         return dataList.stream()
                 .map(data -> new Object[] { data })
                 .toArray(Object[][]::new);
+    }
+
+    public String getTokenFromLogin() {
+        RequestApiLogin req = new RequestApiLogin();
+
+        // Hit API
+        Response response =
+                given().
+                        spec(getSpecRequest()).
+                        body(req).
+                        when().
+                        post(ResourcesPathAPI.Login.toString()).
+                        then().
+                        spec(getSpecResponse(200)).
+                        extract().response();
+
+        String rawResponseBody = response.asString();
+        String token = response.as(ResponseApiLogin.class).getToken();
+
+        if (token == null || token.isBlank()) {
+            sendLogExtentTest(Status.INFO, createLabelPrimary("Actual API Login Response:"));
+            sendLogExtentTest(Status.INFO, MarkupHelper.createCodeBlock(rawResponseBody, CodeLanguage.JSON));
+            throw new IllegalStateException("Token not returned from login API Response");
+        }
+
+        return token;
     }
 }

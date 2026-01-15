@@ -1,5 +1,8 @@
 package api.PojoClass.ApiLogin.ResponseBody;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseApiLogin {
     public String token;
     public String error;

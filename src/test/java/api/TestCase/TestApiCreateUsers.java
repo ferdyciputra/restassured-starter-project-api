@@ -25,6 +25,8 @@ public class TestApiCreateUsers extends BaseTest {
 
     @Test
     public void checkJsonSchemaResponse() throws FileNotFoundException {
+        String token = getTokenFromLogin();
+
         FileReader fileSchemaJson = new FileReader(ROOT_PATH_SCHEMA_JSON + "create-users-schema.json");
 
         RequestApiCreateUsers req = new RequestApiCreateUsers();
@@ -32,7 +34,7 @@ public class TestApiCreateUsers extends BaseTest {
         // Hit API
         Response response =
                 given().
-                    spec(getSpecRequest()).
+                    spec(getSpecRequest(token)).
                     body(req).
                 when().
                     post(ResourcesPathAPI.CreateUsers.toString()).
@@ -68,6 +70,7 @@ public class TestApiCreateUsers extends BaseTest {
 
                 String job = fileJsonObject.get("job").toString();
                 String name = fileJsonObject.get("name").toString();
+                String token = getTokenFromLogin();
 
                 // Create Request Body
                 RequestApiCreateUsers req = new RequestApiCreateUsers();
@@ -77,7 +80,7 @@ public class TestApiCreateUsers extends BaseTest {
                 // Hit API
                 ResponseApiCreateUsers response =
                         given().
-                            spec(getSpecRequest()).
+                            spec(getSpecRequest(token)).
                             body(req).
                         when().
                             post(ResourcesPathAPI.CreateUsers.toString()).
