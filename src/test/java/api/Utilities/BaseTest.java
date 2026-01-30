@@ -1,6 +1,5 @@
 package api.Utilities;
 
-import api.Custom.CustomTableRequestResponse;
 import api.Custom.ResourcesPathAPI;
 import api.PojoClass.ApiLogin.RequestBody.RequestApiLogin;
 import api.PojoClass.ApiLogin.ResponseBody.ResponseApiLogin;
@@ -17,7 +16,6 @@ import io.restassured.config.HttpClientConfig;
 import io.restassured.config.LogConfig;
 import io.restassured.config.RestAssuredConfig;
 import io.restassured.http.ContentType;
-import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
@@ -77,6 +75,7 @@ public class BaseTest {
         requestSpecBuilder.setAccept(ContentType.JSON);
         requestSpecBuilder.setConfig(getDefaultConfig());
         requestSpecBuilder.addHeader("Authorization", "Bearer " + token);
+        requestSpecBuilder.addHeader("x-api-key", X_API_KEY);
 
         return requestSpecBuilder.build();
     }
@@ -160,12 +159,6 @@ public class BaseTest {
 
     public String createLabelPrimary(String message) {
         return "<span class='badge badge-info'>" + message + "</span>";
-    }
-
-    public Object[][] convertTwoDimensionalArrayFromListHashMap (List<HashMap<Object, Object>> dataList) {
-        return dataList.stream()
-                .map(data -> new Object[] { data })
-                .toArray(Object[][]::new);
     }
 
     public String getTokenFromLogin() {
